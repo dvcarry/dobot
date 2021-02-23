@@ -24,7 +24,7 @@ module.exports = {
     async getTasks(type) {
         try {
             const { data } = await axios.get('tasks')
-            const todayTasks = data.filter(item => item.plan === type).map(task => task.name)
+            const todayTasks = data.filter(item => item.plan === type).map(task => ({ id: task.id, name: task.name, index: task.index }))
             return todayTasks
         } catch (error) {
             console.log(error)
@@ -42,7 +42,15 @@ module.exports = {
     async addTask(name) {
         const now = new Date();
         try {
-            await axios.post('tasks', {...CURRENT_TASK, name: name})
+            await axios.post('tasks', { ...CURRENT_TASK, name: name })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async doTask(id) {
+        const now = new Date();
+        try {
+            await axios.put('tasks/do', { id })
         } catch (error) {
             console.log(error)
         }

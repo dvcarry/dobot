@@ -3,7 +3,7 @@ const btn = require('./buttons')
 module.exports = {
     home: [
         [btn.tasks], 
-        [btn.inbox], 
+        [btn.inbox, btn.upcoming], 
         [btn.add], 
     ]
 }
