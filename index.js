@@ -67,7 +67,7 @@ function sendMessage(user_id, message, keyboardName) {
 }
 
 function sendListMessage(user_id, data, keyboardName) {
-    const message = data.map((item, index) => `${index + 1}. ${item}`).join('\n')
+    const message = data.map((item, index) => `${index + 1}. ${item.name}`).join('\n')
     bot.sendMessage(user_id, message, {
         reply_markup: {
             keyboard: keyboardName,
