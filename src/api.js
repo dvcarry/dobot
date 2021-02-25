@@ -24,12 +24,22 @@ module.exports = {
     async getTasks(type) {
         try {
             const { data } = await axios.get('tasks')
-            const todayTasks = data.filter(item => item.plan === type).map(task => ({ id: task.id, name: task.name, index: task.index }))
-            return todayTasks
+            let filtredTasks
+            if (type === 'today' || type === 'done') {
+                filtredTasks = data.filter(item => item.plan === type)
+            } else {
+                filtredTasks = data.filter(item => item.plan === type && !item.isparent)
+            }
+            const resultTasks = filtredTasks.map(task => {
+                const name = task.childname ? `${task.name} > ${task.childname}` : task.name
+                return { id: task.id, name: name, index: task.index }
+            })
+            return resultTasks
         } catch (error) {
             console.log(error)
         }
     },
+
     // async getInboxTasks(user_id, type) {
     //     try {
     //         const { data } = await axios.get('tasks')

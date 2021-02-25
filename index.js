@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = '1640845621:AAFKjtfjqVLM5xaN2TXGdzRLT-8GW-VQvPk'
+// const token = '1296848762:AAFTApdSoBwMoTYkAdTQEdymNCqQmD-CaN4'
 const bot = new TelegramBot(token, { polling: true });
 
 const keyboard = require('./src/keyboard')
@@ -13,9 +14,6 @@ bot.onText(/\/start/, async msg => {
     const { id: user_id } = msg.chat;
     sendMessage(user_id, `Привет ${msg.from.first_name}`, keyboard.home)
 })
-
-
-
 
 bot.on('message', async msg => {
 
@@ -37,7 +35,12 @@ bot.on('message', async msg => {
                 break
             case btn.upcoming:
                 const resUpcoming = await API.getTasks('upcoming')
+                const upcomingTasks = resUpcoming.filter(item => item.child === 0)
                 sendListMessage(user_id, resUpcoming, keyboard.home)
+                break
+            case btn.done:
+                const resDone = await API.getTasks('done')
+                sendListMessage(user_id, resDone, keyboard.home)
                 break
             case btn.add:
                 sendMessage(user_id, 'Введи название задачи', keyboard.home)
@@ -67,7 +70,7 @@ function sendMessage(user_id, message, keyboardName) {
 }
 
 function sendListMessage(user_id, data, keyboardName) {
-    const message = data.map((item, index) => `${index + 1}. ${item.name}`).join('\n')
+    const message = data.length > 0 ? data.map((item, index) => `${index + 1}. ${item.name}`).join('\n') : 'Нет задач'
     bot.sendMessage(user_id, message, {
         reply_markup: {
             keyboard: keyboardName,
