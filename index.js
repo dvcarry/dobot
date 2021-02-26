@@ -20,9 +20,15 @@ bot.on('message', async msg => {
     const { id: user_id } = msg.chat;
 
     if (status === 'add') {
-        await API.addTask(msg.text)
-        status = null
-        sendMessage(user_id, 'Готово', keyboard.home)
+        if (msg.text === 'Отмена') {
+            status = null
+            sendMessage(user_id, 'Готово', keyboard.home)
+        } else {
+            await API.addTask(msg.text)
+            status = null
+            sendMessage(user_id, 'Готово', keyboard.home)
+        }
+
     } else {
         switch (msg.text) {
             case btn.tasks:
@@ -43,7 +49,7 @@ bot.on('message', async msg => {
                 sendListMessage(user_id, resDone, keyboard.home)
                 break
             case btn.add:
-                sendMessage(user_id, 'Введи название задачи', keyboard.home)
+                sendMessage(user_id, 'Введи название задачи', keyboard.cancel)
                 status = 'add'
                 break
             default:

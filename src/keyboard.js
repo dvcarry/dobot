@@ -5,5 +5,8 @@ module.exports = {
         [btn.tasks], 
         [btn.inbox, btn.upcoming, btn.done], 
         [btn.add], 
+    ],
+    cancel: [
+        [btn.cancel]
     ]
 }

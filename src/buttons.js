@@ -3,5 +3,6 @@ module.exports = {
     inbox: 'indox',
     upcoming: 'upcoming',
     add: 'Добавить задачу',
-    done: 'done'
+    done: 'done',
+    cancel: 'Отмена'
 }
