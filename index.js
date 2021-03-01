@@ -8,7 +8,7 @@ const btn = require('./src/buttons')
 const API = require('./src/api');
 const api = require('./src/api');
 
-let status = null
+// let status = null
 
 bot.onText(/\/start/, async msg => {
     const { id: user_id } = msg.chat;
@@ -19,43 +19,75 @@ bot.on('message', async msg => {
 
     const { id: user_id } = msg.chat;
 
-    if (status === 'add') {
-        if (msg.text === 'Отмена') {
-            status = null
-            sendMessage(user_id, 'Готово', keyboard.home)
-        } else {
+    switch (msg.text) {
+        case btn.tasks:
+            const tasks = await API.getTasks('today')
+            sendInline(user_id, 'Задачи на сегодня', tasks)
+            break
+        case btn.inbox:
+            const resInbox = await API.getTasks('inbox')
+            sendListMessage(user_id, resInbox, keyboard.home)
+            break
+        case btn.upcoming:
+            const resUpcoming = await API.getTasks('upcoming')
+            const upcomingTasks = resUpcoming.filter(item => item.child === 0)
+            sendListMessage(user_id, upcomingTasks, keyboard.home)
+            break
+        case btn.done:
+            const resDone = await API.getTasks('done')
+            sendListMessage(user_id, resDone, keyboard.home)
+            break
+        // case btn.add:
+        //     sendMessage(user_id, 'Введи название задачи', keyboard.cancel)
+        //     status = 'add'
+        //     break
+        default:
             await API.addTask(msg.text)
-            status = null
+            // status = null
             sendMessage(user_id, 'Готово', keyboard.home)
-        }
-
-    } else {
-        switch (msg.text) {
-            case btn.tasks:
-                const tasks = await API.getTasks('today')
-                sendInline(user_id, 'Задачи на сегодня', tasks)
-                break
-            case btn.inbox:
-                const resInbox = await API.getTasks('inbox')
-                sendListMessage(user_id, resInbox, keyboard.home)
-                break
-            case btn.upcoming:
-                const resUpcoming = await API.getTasks('upcoming')
-                const upcomingTasks = resUpcoming.filter(item => item.child === 0)
-                sendListMessage(user_id, resUpcoming, keyboard.home)
-                break
-            case btn.done:
-                const resDone = await API.getTasks('done')
-                sendListMessage(user_id, resDone, keyboard.home)
-                break
-            case btn.add:
-                sendMessage(user_id, 'Введи название задачи', keyboard.cancel)
-                status = 'add'
-                break
-            default:
-                break
-        }
+            break
     }
+
+    // if (status === 'add') {
+    //     if (msg.text === 'Отмена') {
+    //         status = null
+    //         sendMessage(user_id, 'Готово', keyboard.home)
+    //     } else {
+    //         await API.addTask(msg.text)
+    //         status = null
+    //         sendMessage(user_id, 'Готово', keyboard.home)
+    //     }
+
+    // } else {
+    //     switch (msg.text) {
+    //         case btn.tasks:
+    //             const tasks = await API.getTasks('today')
+    //             sendInline(user_id, 'Задачи на сегодня', tasks)
+    //             break
+    //         case btn.inbox:
+    //             const resInbox = await API.getTasks('inbox')
+    //             sendListMessage(user_id, resInbox, keyboard.home)
+    //             break
+    //         case btn.upcoming:
+    //             const resUpcoming = await API.getTasks('upcoming')
+    //             const upcomingTasks = resUpcoming.filter(item => item.child === 0)
+    //             sendListMessage(user_id, resUpcoming, keyboard.home)
+    //             break
+    //         case btn.done:
+    //             const resDone = await API.getTasks('done')
+    //             sendListMessage(user_id, resDone, keyboard.home)
+    //             break
+    //         case btn.add:
+    //             sendMessage(user_id, 'Введи название задачи', keyboard.cancel)
+    //             status = 'add'
+    //             break
+    //         default:
+    //             await API.addTask(msg.text)
+    //             // status = null
+    //             sendMessage(user_id, 'Готово', keyboard.home)
+    //             break
+    //     }
+    // }
 
 })
 
