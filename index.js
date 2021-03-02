@@ -29,7 +29,7 @@ bot.on('message', async msg => {
             break
         case btn.upcoming:
             const resUpcoming = await API.getTasks('upcoming')
-            const upcomingTasks = resUpcoming.filter(item => item.child === 0)
+            const upcomingTasks = resUpcoming.filter(item => item.type !== 'проект')
             sendListMessage(user_id, upcomingTasks, keyboard.home)
             break
         case btn.done:
