@@ -69,7 +69,7 @@ module.exports = {
     async getHabits() {
         const today = moment(new Date()).format('YYYY-MM-DD')
         try {
-            await axios.put('habits/' + today)
+            await axios.get('habits/' + today)
         } catch (error) {
             console.log(error)
         }
