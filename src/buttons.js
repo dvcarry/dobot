@@ -4,5 +4,6 @@ module.exports = {
     upcoming: 'upcoming',
     add: 'Добавить задачу',
     done: 'done',
-    cancel: 'Отмена'
+    cancel: 'Отмена',
+    habits: 'Привычки'
 }

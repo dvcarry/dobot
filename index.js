@@ -24,7 +24,7 @@ bot.on('message', async msg => {
             sendInline(user_id, 'Задачи на сегодня', tasks)
             break
         case btn.inbox:
-            const resInbox = await API.getTasks('inbox')
+            const resInbox = await API.getTasks('inbox')            
             sendListMessage(user_id, resInbox, keyboard.home)
             break
         case btn.upcoming:
@@ -35,6 +35,10 @@ bot.on('message', async msg => {
         case btn.done:
             const resDone = await API.getTasks('done')
             sendListMessage(user_id, resDone, keyboard.home)
+            break
+        case btn.habits:
+            const resDone = await API.getHabits()
+            sendHabitsMessage(user_id, resDone, keyboard.home)
             break
         default:
             await API.addTask(msg.text)
@@ -68,6 +72,17 @@ function sendListMessage(user_id, data, keyboardName) {
         }
     })
 }
+
+function sendHabitsMessage(user_id, data, keyboardName) {
+    const message = data.length > 0 ? data.map((item, index) => `${item.name} - ${item.days}`).join('\n') : 'Нет задач'
+    bot.sendMessage(user_id, message, {
+        reply_markup: {
+            keyboard: keyboardName,
+            one_time_keyboard: true
+        }
+    })
+}
+
 
 function sendInline(chatID, text, data) {
     const tasksInline = data.map(item => {

@@ -65,6 +65,14 @@ module.exports = {
             console.log(error)
         }
     },
+    async getHabits() {
+        const today = moment(new Date()).format('YYYY-MM-DD')
+        try {
+            await axios.put('habits/' + today)
+        } catch (error) {
+            console.log(error)
+        }
+    },
     // async setStatusOfUser(user_id, status) {
     //     const now = new Date();
     //     try {
