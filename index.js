@@ -37,8 +37,8 @@ bot.on('message', async msg => {
             sendListMessage(user_id, resDone, keyboard.home)
             break
         case btn.habits:
-            const resDone = await API.getHabits()
-            sendHabitsMessage(user_id, resDone, keyboard.home)
+            const habits = await API.getHabits()
+            sendHabitsMessage(user_id, habits, keyboard.home)
             break
         default:
             await API.addTask(msg.text)
