@@ -69,7 +69,9 @@ module.exports = {
     async getHabits() {
         const today = moment(new Date()).format('YYYY-MM-DD')
         try {
-            await axios.get('habits/' + today)
+            const { data } = await axios.get('habits/' + today)
+            console.log("🚀 ~ file: api.js ~ line 73 ~ getHabits ~ res", data)
+            return data
         } catch (error) {
             console.log(error)
         }
